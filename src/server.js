@@ -17,7 +17,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/services', function (req, res) {
-  res.send('Return the services\n' + req.path)
+  res.send(config.services)
 })
 
 app.get('/services/[^/]+', function (req, res) {
