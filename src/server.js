@@ -20,8 +20,20 @@ app.get('/services', function (req, res) {
   res.send(config.services)
 })
 
-app.get('/services/[^/]+', function (req, res) {
-  res.send('get service\n' + req.path)
+app.get('/services/:id', function (req, res) {
+  var service = config.services[req.params.id]
+  var tar = require("tar")
+  const path = require('path');
+  var filename = path.join(__dirname, service.filename)
+  tar.c(
+    {
+      gzip: "zf",
+      file: filename,
+      sync: true
+    },
+    service.backups
+  )
+  res.download(filename, service.filename)
 })
 
 var server = app.listen(port, function () {
